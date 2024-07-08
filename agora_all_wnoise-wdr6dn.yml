@@ -1,0 +1,29 @@
+prepare_map:
+  sim_name: agora
+  agora_dir: /global/cfs/projectdirs/act/data/agora_sims/outputs
+  do_tsz: False
+  do_ksz: False
+  do_cib: False
+  do_radiops: False
+  do_all: True
+  do_freqcoadd: True
+  do_hilc: True
+  #radiops_flux_cut: [100.,100.]
+  #cib_flux_cut: [100.,100.]
+  disable_noise: False
+  save_survey_mask: True
+  source_flux_cut:
+    - 50.
+    - 50.
+  noise_from_ivar:
+    - /global/cfs/cdirs/act/data/sigurdkn/actpol/maps/dr6v3_20211031/release_bestpass/cmb_daynight_tot_f090_coadd_ivar.fits
+    - /global/cfs/cdirs/act/data/sigurdkn/actpol/maps/dr6v3_20211031/release_bestpass/cmb_daynight_tot_f150_coadd_ivar.fits
+  survey_mask_hpix: /pscratch/sd/o/omard/FGSIMS_USEFUL/dr6v2_default_union_mask_wnemo_nside4096.fits
+  beam_from_file:
+    - /global/cfs/projectdirs/act/data/act_dr5/s08s18_coadd/auxilliary/beams/act_planck_dr5.01_s08s18_f090_daynight_beam.txt
+    - /global/cfs/projectdirs/act/data/act_dr5/s08s18_coadd/auxilliary/beams/act_planck_dr5.01_s08s18_f150_daynight_beam.txt
+  mlmax: 12000
+  save_maps: True
+  save_alms: False
+  freqs: ["90", "150"]
+  

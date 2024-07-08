@@ -1,0 +1,69 @@
+# Nemo config file
+# YAML format 
+# - use null to return None in Python
+# - note that YAML is fussy about large numbers: use e.g. 1.0e+14 for M500MSun (not 1e14)
+
+# Valid units are uK or Jy/sr
+# this should be a list of maps at different frequencies
+# NOTE: surveyMask is optional
+unfilteredMaps:
+    - {mapFileName: "/pscratch/sd/o/omard/FGSIMS_OUT/agora/prep_map/cmb_orig/sky_map_90.fits",
+       weightsFileName: "/pscratch/sd/o/omard/FGSIMS_OUT/agora/prep_map/cmb_orig/ivar_map_90.fits",
+       obsFreqGHz: 90., units: 'uK',
+       beamFileName: "/pscratch/sd/o/omard/FGSIMS_OUT/agora/prep_map/cmb_orig/beam_90.txt"}
+
+# Masks
+#surveyMask: null
+
+outputDir: "/pscratch/sd/o/omard/FGSIMS_OUT/agora/nemo_allfgs_ps_090"
+
+# Instead of giving point source mask, can give catalog instead
+maskPointSourcesFromCatalog: null
+    
+# Detection/catalog options
+# Set useInterpolator; True for sub-pixel flux and SNR measurements
+thresholdSigma: 4.0
+minObjPix: 1
+findCenterOfMass: True
+useInterpolator: True
+rejectBorder: 0
+objIdent: 'PS'
+longNames: False
+catalogCuts: ['SNR > 4.0']
+measureShapes: True
+
+# Set this to True to generate a sky sim (with noise), run all the filters over it, and measure contamination
+# Set numSkySims to number required - we need to average over many as results vary a fair bit
+estimateContaminationFromSkySim: False
+numSkySims: 10
+
+# Set this to True to estimate contamination by running cluster finder over inverted maps
+# This is sensitive to how well point source masking is done
+estimateContaminationFromInvertedMaps: False
+
+# Run position recovery test
+positionRecoveryTest: False
+posRecIterations: 1
+posRecSourcesPerTile: 100
+    
+# tileDir options - cut-up each map into smaller sections
+makeTileDir: True
+makeQuickLookMaps: False
+stitchTiles: False
+tileOverlapDeg: 1.0
+tileDefLabel: 'auto'
+tileDefinitions: {mask: '/pscratch/sd/o/omard/FGSIMS_OUT/agora/prep_map/survey_mask.fits',
+                  targetTileWidthDeg: 10.0,
+                  targetTileHeightDeg: 5.0}
+
+# Filter definitions:
+twoPass: False
+mapFilters:
+        - {label: "Beam193",
+           class: "BeamMatchedFilter",
+           params: {noiseParams: {method: "dataMap",
+                                  noiseGridArcmin: 40.0,
+                                  numNoiseBins: 8},
+                    saveFilteredMaps: True,
+                    outputUnits: 'uK',
+                    edgeTrimArcmin: 0.0}}
